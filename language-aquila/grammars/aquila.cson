@@ -1,0 +1,166 @@
+# grammars/aquila.cson
+
+scopeName: 'source.aquila'
+name: 'Aquila'
+fileTypes: [ 'aq' ]
+limitLineLength: false
+
+patterns: [
+  { # //
+    comment: 'single-line comment rule'
+    name: 'comment.line.aquila'
+    match: '//.*$'
+  }
+  {
+    comment: 'multiple-lines comment rule'
+    contentName: 'comment.block.aquila'
+    begin: '\\/\\*\\*'
+    beginCaptures:
+      0: name: 'comment.block.aquila'
+    end: '\\*\\*\\/'
+    endCaptures:
+      0: name: 'comment.block.aquila'
+  }
+  { # nested instructions
+    comment: 'nested instructions' # should add the parentheses ?
+    contentName: 'markup.other.forloop.aquila'
+    begin: '(for |if | while )\\('
+    beginCaptures:
+      1: name: 'punctuation.definition.bold.aquila'
+    end: 'end\\-for|end-if|end-while'
+    endCaptures:
+      0: name: 'punctuation.definition.bold.aquila'
+    patterns: [{ include: '$self' }]
+  }
+  {
+    comment: 'macro PreProcessor rule'
+    match: '(#[a-zA-Z]*) (.*)'
+    captures:
+      1: name: 'punctuation.definition.bold.aquila'
+      2: name: 'string.other.aquila'
+  }
+  {
+    comment: 'variable declaration with explicit type and value'
+    match: '(declare) (int|float|bool|list) ([a-zA-Z_]+[0-9a-zA-Z]*) (.+)' # missing "_" in allowed chars
+    captures:
+      1: name: 'punctuation.definition.bold.aquila'
+      2: name: 'support.type.aquila'
+      3: name: 'support.other.aquila'
+      4:
+          name: 'constant.other.aquila'
+          patterns: [{ include: '$self' }]
+  }
+  {
+    comment: 'variables'
+    match: '\\$[a-zA-Z_]+[0-9a-zA-Z]*'
+    name: 'variable.other.aquila'
+  }
+  {
+    comment: 'arithmetical & logical operators' # BROKEN ? (test one by one)
+    match: '\\+\\-\\*\\/\\%\\<\\>\\{\\}\\:\\~\\&\\|\\^'
+    name: 'keyword.operator.aquila'
+  }
+  {
+    comment: 'control keywords'
+    match: '(return|continue|break)(\\()([^\\(\\)]*)(\\))'
+    captures:
+      1: name: 'keyword.control.aquila'
+      2: name: 'keyword.other.aquila'
+      3: patterns: [{ include: '$self' }]
+      4: name: 'keyword.other.aquila'
+  }
+  {
+    comment: 'other keywords'
+    match: '(trace|trace_func) (.*)'
+    captures:
+      1: name: 'keyword.other.aquila'
+    patterns: [{ include: '$self' }]
+  }
+  {
+    comment: 'print_str & print_str_endl functions'
+    match: '(print_str|print_str_endl)(\\()(.*)(\\))' # maybe we use quotes after all ? idk
+    captures:
+      1: name: 'support.function.aquila'
+      2: name: 'keyword.other.aquila'
+      3: name: 'markup.raw.aquila'
+      4: name: 'keyword.other.aquila'
+  }
+  {
+    comment: 'all other functions'
+    match: '([a-zA-Z_]+[0-9a-zA-Z]*)(\\()([^\\(\\)]*)(\\))'
+    captures:
+      1: name: 'support.function.aquila'
+      2: name: 'keyword.other.aquila'
+      3:
+        name: 'variable.parameter.aquila'
+        patterns: [{ include: '$self' }]
+      4: name: 'keyword.other.aquila'
+  }
+  # variable types
+  {
+    comment: 'integers & floats'
+    match: '[0-9]+\\.?[0-9]+'
+    name: 'constant.numeric.aquila'
+  }
+  {
+    comments: 'bools'
+    match: 'true|false'
+    name: 'constant.language.aquila'
+  }
+  {
+    comment: 'lists'
+    match: '\\[[^\\[\\]]*\\]'
+    patterns: [{ include: '$self' }]
+  }
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
