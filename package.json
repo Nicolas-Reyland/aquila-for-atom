@@ -1,6 +1,7 @@
 {
-  "name": "language-aquila",
-  "version": "0.0.0",
+  "name": "aquila-for-atom",
+  "version": "0.1.2",
+  "author": "Nicolas Reyland",
   "description": "An Aquila language grammar package",
   "repository": "https://github.com/Nicolas-Reyland/aquila-for-atom",
   "keywords": [
