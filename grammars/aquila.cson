@@ -1,4 +1,5 @@
 # grammars/aquila.cson
+# Author: https://github.com/Nicolas-Reyland
 
 scopeName: 'source.aquila'
 name: 'Aquila'
