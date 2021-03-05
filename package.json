@@ -1,0 +1,15 @@
+{
+  "name": "language-aquila",
+  "version": "0.0.0",
+  "description": "An Aquila language grammar package",
+  "repository": "https://github.com/Nicolas-Reyland/aquila-for-atom",
+  "keywords": [
+    "syntax",
+    "highlighting",
+    "grammar"
+  ],
+  "bugs": "https://github.com/Nicolas-Reyland/aquila-for-atom/issues",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  }
+}
