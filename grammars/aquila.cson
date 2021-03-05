@@ -1,5 +1,5 @@
 # grammars/aquila.cson
-# Author: https://github.com/Nicolas-Reyland
+# repo: https://github.com/Nicolas-Reyland/aquila-for-atom
 
 scopeName: 'source.aquila'
 name: 'Aquila'
@@ -63,7 +63,12 @@ patterns: [
     match: '(declare) (int|float|bool|list|auto) ([a-zA-Z_]+[0-9a-zA-Z_]*) (.+)' # cannot check for invalid value (spaces) because in-for-loop declaration
     captures:
       1: name: 'storage.modifier.aquila'
-      2: name: 'support.type.aquila'
+      2:
+        name: 'support.type.aquila'
+        patterns: [{
+          match: 'auto'
+          name: 'support.other.aquila'
+        }]
       3: # var name in keywords ?
         name: 'variable.other.aquila'
         patterns: [{
@@ -79,7 +84,12 @@ patterns: [
     match: '(declare) (int|float|bool|list) ([a-zA-Z_]+[0-9a-zA-Z_]*)'
     captures:
       1: name: 'storage.modifier.aquila'
-      2: name: 'support.type.aquila'
+      2:
+        name: 'support.type.aquila'
+        patterns: [{
+          match: 'auto'
+          name: 'support.other.aquila'
+        }]
       3: # var name in keywords ?
         name: 'variable.other.aquila'
         patterns: [{
@@ -101,7 +111,6 @@ patterns: [
       3:
         name: 'constant.other.aquila'
         patterns: [{ include: '$self' }]
-      4: name: 'invalid.illegal.aquila'
   }
   # assignments
   {
@@ -193,7 +202,7 @@ patterns: [
   }
   {
     comment: 'lists'
-    match: '(\\[)([^\\[\\]]*)(\\])'
+    match: '(\\[)(.*)(\\])'
     captures:
      1: name: 'string.interpolated.aquila'
      2: patterns: [{ include: '$self' }]
