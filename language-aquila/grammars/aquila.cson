@@ -8,12 +8,12 @@ limitLineLength: false
 patterns: [
   # comments
   {
-    comment: 'single-line comment rule'
+    comment: 'single-line comment'
     name: 'comment.line.aquila'
     match: '//.*$'
   }
   {
-    comment: 'multiple-lines comment rule'
+    comment: 'multiple-lines comment'
     contentName: 'comment.block.aquila'
     begin: '\\/\\*\\*'
     beginCaptures:
@@ -26,21 +26,29 @@ patterns: [
   {
     comment: 'nested instructions'
     contentName: 'markup.other.forloop.aquila'
-    begin: '(for |if | while )\\('
+    begin: '(for |if | while )(\\()(.*)(\\))'
     beginCaptures:
-      1: name: 'punctuation.definition.bold.aquila'
+      1: name: 'keyword.control.aquila'
+      3: patterns: [{ include: '$self' }]
     end: 'end\\-for|end-if|end-while'
     endCaptures:
-      0: name: 'punctuation.definition.bold.aquila'
+      0: name: 'keyword.control.aquila'
     patterns: [
       match: 'else'
-      name: 'punctuation.definition.bold.aquila'
+      name: 'keyword.control.aquila'
       { include: '$self' }
     ]
   }
   # PreProcessor
   {
-    comment: 'macro PreProcessor rule'
+    comment: 'macro PreProcessor name'
+    match: '(#name) (.*)'
+    captures:
+      1: name: 'entity.name.tag.aquila'
+      2: name: 'markup.underline.aquila'
+  }
+  {
+    comment: 'macro PreProcessor'
     match: '(#[a-zA-Z]*) (.*)'
     captures:
       1: name: 'entity.name.tag.aquila'
@@ -49,14 +57,14 @@ patterns: [
   # declarations
   {
     comment: 'variable declaration with explicit type and value'
-    match: '(declare) (int|float|bool|list|auto) ([a-zA-Z_]+[0-9a-zA-Z_]*) (.+)'
+    match: '(declare) (int|float|bool|list|auto) ([a-zA-Z_]+[0-9a-zA-Z_]*) (.+)' # cannot check for invalid value (spaces) because in-for-loop declaration
     captures:
-      1: name: 'punctuation.definition.bold.aquila'
+      1: name: 'storage.modifier.aquila'
       2: name: 'support.type.aquila'
-      3:
-        name: 'support.other.aquila'
+      3: # var name in keywords ?
+        name: 'variable.other.aquila'
         patterns: [{
-          match: 'if|else|end-if|for|end-for|while|end-while|declare|overwrite|safe|trace|void|auto|int|float|bool|list|function'
+          match: '/^if$/|/^else$/|/^end-if$/|/^for$/|/^end-for$/|/^while$/|/^end-while$/|/^declare$/|/^overwrite$/|/^safe$/|/^trace$/|/^void$/|/^auto$/|/^int$/|/^float$/|/^bool$/|/^list$/|/^function$/'
           name: 'invalid.illegal.aquila'
         }]
       4:
@@ -67,35 +75,36 @@ patterns: [
     comment: 'variable declaration with explicit type'
     match: '(declare) (int|float|bool|list) ([a-zA-Z_]+[0-9a-zA-Z_]*)'
     captures:
-      1: name: 'punctuation.definition.bold.aquila'
+      1: name: 'storage.modifier.aquila'
       2: name: 'support.type.aquila'
-      3:
-        name: 'support.other.aquila'
+      3: # var name in keywords ?
+        name: 'variable.other.aquila'
         patterns: [{
-          match: 'if|else|end-if|for|end-for|while|end-while|declare|overwrite|safe|trace|void|auto|int|float|bool|list|function'
+          match: '/^if$/|/^else$/|/^end-if$/|/^for$/|/^end-for$/|/^while$/|/^end-while$/|/^declare$/|/^overwrite$/|/^safe$/|/^trace$/|/^void$/|/^auto$/|/^int$/|/^float$/|/^bool$/|/^list$/|/^function$/'
           name: 'invalid.illegal.aquila'
         }]
   }
   {
     comment: 'variable declaration with value'
-    match: '(declare) ([a-zA-Z_]+[0-9a-zA-Z_]*) (.+)'
+    match: '(declare) ([a-zA-Z_]+[0-9a-zA-Z_]*) (.+)' # cannot check for invalid value (spaces) because in-for-loop declaration
     captures:
-      1: name: 'punctuation.definition.bold.aquila'
-      2:
-        name: 'support.other.aquila'
+      1: name: 'storage.modifier.aquila'
+      2: # var name in keywords ?
+        name: 'variable.other.aquila'
         patterns: [{
-          match: 'if|else|end-if|for|end-for|while|end-while|declare|overwrite|safe|trace|void|auto|int|float|bool|list|function'
+          match: '/^if$/|/^else$/|/^end-if$/|/^for$/|/^end-for$/|/^while$/|/^end-while$/|/^declare$/|/^overwrite$/|/^safe$/|/^trace$/|/^void$/|/^auto$/|/^int$/|/^float$/|/^bool$/|/^list$/|/^function$/'
           name: 'invalid.illegal.aquila'
         }]
       3:
         name: 'constant.other.aquila'
         patterns: [{ include: '$self' }]
+      4: name: 'invalid.illegal.aquila'
   }
   # assignments
   {
     comment: 'assignment "="'
     match: '\\='
-    name: 'keyword.operator.aquila'
+    name: 'keyword.other.aquila'
   }
   # symbols (variables, AL operators, etc.) -> excludes variable types
   {
@@ -115,7 +124,7 @@ patterns: [
   {
     comment: 'arithmetical & logical operators' # BROKEN ? (test one by one)
     match: '[\\+\\-\\*\\/\\%\\<\\>\\{\\}\\:\\~\\&\\|\\^]'
-    name: 'keyword.other.aquila'
+    name: 'keyword.operator.aquila'
   }
   # functions
   {
@@ -166,7 +175,7 @@ patterns: [
   # variable types
   {
     comment: 'integers & floats'
-    match: '[0-9]+[\\.?[0-9]+]?'
+    match: '[0-9]+[\\.[0-9]+]?f?'
     name: 'constant.numeric.aquila'
   }
   {
@@ -180,21 +189,6 @@ patterns: [
     patterns: [{ include: '$self' }]
   }
 ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
