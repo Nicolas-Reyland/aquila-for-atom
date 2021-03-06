@@ -16,9 +16,10 @@ patterns: [
   {
     comment: 'multiple-lines comment'
     contentName: 'comment.block.aquila'
-    begin: '\\/\\*\\*'
+    begin: '(.*)(\\/\\*\\*)'
     beginCaptures:
-      0: name: 'comment.block.aquila'
+      1: patterns: [{ include: '$self' }]
+      2: name: 'comment.block.aquila'
     end: '\\*\\*\\/'
     endCaptures:
       0: name: 'comment.block.aquila'
