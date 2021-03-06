@@ -8,6 +8,7 @@ limitLineLength: false
 
 # @reserved: '^if$|^else$|^end-if$|^for$|^end-for$|^while$|^end-while$|^declare$|^overwrite$|^safe$|^trace$|^void$|^auto$|^int$|^float$|^bool$|^list$|^function$';
 
+
 patterns: [
   # comments
   {
