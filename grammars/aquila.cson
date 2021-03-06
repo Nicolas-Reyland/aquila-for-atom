@@ -6,6 +6,8 @@ name: 'Aquila'
 fileTypes: [ 'aq' ]
 limitLineLength: false
 
+@reserved: '^if$|^else$|^end-if$|^for$|^end-for$|^while$|^end-while$|^declare$|^overwrite$|^safe$|^trace$|^void$|^auto$|^int$|^float$|^bool$|^list$|^function$';
+
 patterns: [
   # comments
   {
@@ -94,7 +96,7 @@ patterns: [
       3: # var name in keywords ?
         name: 'variable.other.aquila'
         patterns: [{
-          match: '[^a-zA-Z_]|^if$|^else$|^end-if$|^for$|^end-for$|^while$|^end-while$|^declare$|^overwrite$|^safe$|^trace$|^void$|^auto$|^int$|^float$|^bool$|^list$|^function$'
+          match: '^if$|^else$|^end-if$|^for$|^end-for$|^while$|^end-while$|^declare$|^overwrite$|^safe$|^trace$|^void$|^auto$|^int$|^float$|^bool$|^list$|^function$'
           name: 'invalid.illegal.aquila'
         }]
   }
