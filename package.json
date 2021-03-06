@@ -1,6 +1,6 @@
 {
   "name": "aquila-for-atom",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "author": "Nicolas Reyland",
   "description": "Aquila grammar package (syntax highlighting)",
   "repository": "https://github.com/Nicolas-Reyland/aquila-for-atom",
