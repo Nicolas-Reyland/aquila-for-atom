@@ -14,8 +14,11 @@ patterns: [
   # comments
   {
     comment: 'single-line comment'
-    name: 'comment.line.aquila'
-    match: '//.*$'
+    #name: 'comment.line.aquila'
+    match: '(.*)(//.*$)'
+    captures:
+      1: patterns: [{ include: '$self' }]
+      2: name: 'comment.line.aquila'
   }
   {
     comment: 'multiple-lines comment'
@@ -148,6 +151,76 @@ patterns: [
     match: '\\,'
     name: 'string.quoted.other.aquila'
   }
+  # function definition
+  {
+    comment: 'function definition'
+    contentName: 'markup.other.function.aquila'
+    begin: '(function) (int|float|bool|list|null|auto) ([a-zA-Z_]+[0-9a-zA-Z_]*)(\\()(.*)(\\))'
+    beginCaptures:
+      1: name: 'support.class.aquila'
+      2:
+        name: 'support.type.aquila'
+        patterns: [{
+          match: 'auto'
+          name: 'support.other.aquila'
+        }]
+      3: name: 'support.class.aquila'
+      5:
+        name: 'variable.parameter.aquila'
+        patterns: [
+          { # doesn't work ? :(
+            match: '^if$|^else$|^end-if$|^for$|^end-for$|^while$|^end-while$|^decl$|^safe$|^overwrite$|^overwrite$|^safe$|^trace$|^null$|^auto$|^int$|^float$|^bool$|^list$|^function$|^end-function$'
+            name: 'invalid.illegal.aquila'
+          }
+          {
+            match: '\\,'
+            name: 'string.quoted.other.aquila'
+          }
+          {
+            match: '[a-zA-Z_]+[0-9a-zA-Z_]*'
+            name: 'variable.other.aquila'
+          }
+        ]
+    end: 'end\\-function'
+    endCaptures:
+      0: name: 'support.class.aquila'
+    patterns: [{ include: '$self' }]
+  }
+  {
+    comment: 'recursive function definition'
+    contentName: 'markup.other.function.aquila'
+    begin: '(function) (recursive) (int|float|bool|list|null|auto) ([a-zA-Z_]+[0-9a-zA-Z_]*)(\\()(.*)(\\))'
+    beginCaptures:
+      1: name: 'support.class.aquila'
+      2: name: 'keyword.control.aquila'
+      3:
+        name: 'support.type.aquila'
+        patterns: [{
+          match: 'auto'
+          name: 'support.other.aquila'
+        }]
+      4: name: 'support.class.aquila'
+      6:
+        name: 'variable.parameter.aquila'
+        patterns: [
+          { # doesn't work ? :(
+            match: '^if$|^else$|^end-if$|^for$|^end-for$|^while$|^end-while$|^decl$|^safe$|^overwrite$|^overwrite$|^safe$|^trace$|^null$|^auto$|^int$|^float$|^bool$|^list$|^function$|^end-function$'
+            name: 'invalid.illegal.aquila'
+          }
+          {
+            match: '\\,'
+            name: 'string.quoted.other.aquila'
+          }
+          {
+            match: '[a-zA-Z_]+[0-9a-zA-Z_]*'
+            name: 'variable.other.aquila'
+          }
+        ]
+    end: 'end\\-function'
+    endCaptures:
+      0: name: 'support.class.aquila'
+    patterns: [{ include: '$self' }]
+  }
   # functions
   {
     comment: 'control keyword return'
@@ -176,7 +249,7 @@ patterns: [
   }
   {
     comment: 'print_str & print_str_endl functions'
-    match: '(print_str|print_str_endl)(\\()(.*)(\\))' # maybe we use quotes after all ? idk
+    match: '(print_str|print_str_endl|interactive_call)(\\()(.*)(\\))' # maybe we use quotes after all ? idk
     captures:
       1: name: 'support.function.aquila'
       2: name: 'string.interpolated.aquila'
@@ -212,40 +285,6 @@ patterns: [
      1: name: 'string.interpolated.aquila'
      2: patterns: [{ include: '$self' }]
      3: name: 'string.interpolated.aquila'
-  }
-  # function definition
-  {
-    comment: 'function definition'
-    contentName: 'markup.other.function.aquila'
-    begin: '(function) (int|float|bool|list) (\\()(.*)(\\))'
-    beginCaptures:
-      1: name: 'support.class.aquila'
-      2:
-        name: 'support.type.aquila'
-        patterns: [{
-          match: 'auto'
-          name: 'support.other.aquila'
-        }]
-      4:
-        name: 'variable.parameter.aquila'
-        patterns: [
-          { # doesn't work ? :(
-            match: '^if$|^else$|^end-if$|^for$|^end-for$|^while$|^end-while$|^decl$|^safe$|^overwrite$|^overwrite$|^safe$|^trace$|^null$|^auto$|^int$|^float$|^bool$|^list$|^function$|^end-function$'
-            name: 'invalid.illegal.aquila'
-          }
-          {
-            match: '\\,'
-            name: 'string.quoted.other.aquila'
-          }
-          {
-            match: '[a-zA-Z_]+[0-9a-zA-Z_]*'
-            name: 'variable.other.aquila'
-          }
-        ]
-    end: 'end\\-function'
-    endCaptures:
-      0: name: 'support.class.aquila'
-    patterns: [{ include: '$self' }]
   }
 ]
 
