@@ -280,11 +280,8 @@ patterns: [
   }
   {
     comment: 'lists'
-    match: '(\\[)(.*)(\\])'
-    captures:
-     1: name: 'string.interpolated.aquila'
-     2: patterns: [{ include: '$self' }]
-     3: name: 'string.interpolated.aquila'
+    match: '\\[|\\]'
+    name: 'string.interpolated.aquila'
   }
 ]
 
