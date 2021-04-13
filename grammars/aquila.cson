@@ -175,7 +175,7 @@ patterns: [
   # functions
   {
     comment: 'control keyword return'
-    match: '(return) *(\\()(.*)(\\))'
+    match: '(return) *(\\()?(.*)(\\))?'
     captures:
       1: name: 'keyword.control.aquila'
       2: name: 'string.interpolated.aquila'
