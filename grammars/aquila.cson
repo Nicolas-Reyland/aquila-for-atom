@@ -6,7 +6,7 @@ name: 'Aquila'
 fileTypes: [ 'aq' ]
 limitLineLength: false
 
-# @reserved: '^if$|^else$|^end\\-if$|^for$|^end-for$|^while$|^end-while$|^decl$|^safe$|^overwrite$|^overwrite$|^safe$|^trace$|^null$|^auto$|^int$|^float$|^bool$|^list$|^function$|^end-function$';
+# @reserved: '^if$|^else$|^end\\-if$|^for$|^end-for$|^while$|^end-while$|^decl$|^safe$|^overwrite$|^overwrite$|^safe$|^trace$|^null$|^auto$|^int$|^float$|^bool$|^list$|^function$|^end-function$|^break$|^continue$|^global$';
 
 
 
@@ -68,7 +68,7 @@ patterns: [
   # '[^a-zA-Z_].*|.*[^0-9a-zA-Z_].*'
   {
     comment: 'variable declaration with explicit type and value'
-    match: '(decl) (int|float|bool|list|auto) ([a-zA-Z_]+[0-9a-zA-Z_]*) (.+)' # cannot check for invalid value (spaces) because in-for-loop declaration
+    match: '([safe |overwrite |const |global ]*decl)( +int| +float| +bool| +list| +auto)? +([a-zA-Z_][0-9a-zA-Z_]*) *(.*)' # cannot check for invalid value (spaces) because in-for-loop declaration
     captures:
       1: name: 'storage.modifier.aquila'
       2:
@@ -80,43 +80,10 @@ patterns: [
       3: # var name in keywords ?
         name: 'variable.other.aquila'
         patterns: [{
-          match: '^if$|^else$|^end\\-if$|^for$|^end-for$|^while$|^end-while$|^decl$|^safe$|^overwrite$|^overwrite$|^safe$|^trace$|^null$|^auto$|^int$|^float$|^bool$|^list$|^function$|^end-function$'
+          match: '^if$|^else$|^end\\-if$|^for$|^end-for$|^while$|^end-while$|^decl$|^safe$|^overwrite$|^overwrite$|^safe$|^trace$|^null$|^auto$|^int$|^float$|^bool$|^list$|^function$|^end-function$|^break$|^continue$|^global$'
           name: 'invalid.illegal.aquila'
         }]
       4:
-        name: 'constant.other.aquila'
-        patterns: [{ include: '$self' }]
-  }
-  {
-    comment: 'variable declaration with explicit type'
-    match: '(decl) (int|float|bool|list) ([a-zA-Z_]+[0-9a-zA-Z_]*)'
-    captures:
-      1: name: 'storage.modifier.aquila'
-      2:
-        name: 'support.type.aquila'
-        patterns: [{
-          match: 'auto'
-          name: 'support.other.aquila'
-        }]
-      3: # var name in keywords ?
-        name: 'variable.other.aquila'
-        patterns: [{
-          match: '^if$|^else$|^end-if$|^for$|^end-for$|^while$|^end-while$|^decl$|^safe$|^overwrite$|^overwrite$|^safe$|^trace$|^null$|^auto$|^int$|^float$|^bool$|^list$|^function$|^end-function$'
-          name: 'invalid.illegal.aquila'
-        }]
-  }
-  {
-    comment: 'variable declaration with value'
-    match: '(decl) ([a-zA-Z_]+[0-9a-zA-Z_]*) (.+)' # cannot check for invalid value (spaces) because in-for-loop declaration
-    captures:
-      1: name: 'storage.modifier.aquila'
-      2: # var name in keywords ?
-        name: 'variable.other.aquila'
-        patterns: [{
-          match: '^if$|^else$|^end-if$|^for$|^end-for$|^while$|^end-while$|^decl$|^safe$|^overwrite$|^overwrite$|^safe$|^trace$|^null$|^auto$|^int$|^float$|^bool$|^list$|^function$|^end-function$'
-          name: 'invalid.illegal.aquila'
-        }]
-      3:
         name: 'constant.other.aquila'
         patterns: [{ include: '$self' }]
   }
@@ -128,13 +95,18 @@ patterns: [
   }
   # symbols (variables, AL operators, etc.) -> excludes variable types
   {
+    comment: 'null variable'
+    match: '\\$null'
+    name: 'keyword.control.aquila'
+  }
+  {
     comment: 'variables'
-    match: '\\$[a-zA-Z_]+[0-9a-zA-Z_]*'
+    match: '\\$[a-zA-Z_][0-9a-zA-Z_]*'
     name: 'variable.other.aquila'
   }
   {
     comment: 'list variables access using brackets []'
-    match: '(\\$[a-zA-Z_]+[0-9a-zA-Z_]*)(\\[)([^\\[\\]]*)(\\])'
+    match: '(\\$[a-zA-Z_][0-9a-zA-Z_]*)(\\[)([^\\[\\]]*)(\\])'
     captures:
       1: 'variable.other.aquila'
       2: 'string.interpolated.aquila'
@@ -151,45 +123,16 @@ patterns: [
     match: '\\,'
     name: 'string.quoted.other.aquila'
   }
+  {
+    comment: 'semi-colon separator'
+    match: '\\;'
+    name: 'string.quoted.single.aquila'
+  }
   # function definition
   {
     comment: 'function definition'
     contentName: 'markup.other.function.aquila'
-    begin: '(function) (int|float|bool|list|null|auto) ([a-zA-Z_]+[0-9a-zA-Z_]*)(\\()(.*)(\\))'
-    beginCaptures:
-      1: name: 'support.class.aquila'
-      2:
-        name: 'support.type.aquila'
-        patterns: [{
-          match: 'auto'
-          name: 'support.other.aquila'
-        }]
-      3: name: 'support.class.aquila'
-      5:
-        name: 'variable.parameter.aquila'
-        patterns: [
-          { # doesn't work ? :(
-            match: '^if$|^else$|^end-if$|^for$|^end-for$|^while$|^end-while$|^decl$|^safe$|^overwrite$|^overwrite$|^safe$|^trace$|^null$|^auto$|^int$|^float$|^bool$|^list$|^function$|^end-function$'
-            name: 'invalid.illegal.aquila'
-          }
-          {
-            match: '\\,'
-            name: 'string.quoted.other.aquila'
-          }
-          {
-            match: '[a-zA-Z_]+[0-9a-zA-Z_]*'
-            name: 'variable.other.aquila'
-          }
-        ]
-    end: 'end\\-function'
-    endCaptures:
-      0: name: 'support.class.aquila'
-    patterns: [{ include: '$self' }]
-  }
-  {
-    comment: 'recursive function definition'
-    contentName: 'markup.other.function.aquila'
-    begin: '(function) (recursive) (int|float|bool|list|null|auto) ([a-zA-Z_]+[0-9a-zA-Z_]*)(\\()(.*)(\\))'
+    begin: '(function) +(recursive +)?(int|float|bool|list|null|auto) +([a-zA-Z_][0-9a-zA-Z_]*) *(\\()(.*)(\\))'
     beginCaptures:
       1: name: 'support.class.aquila'
       2: name: 'keyword.control.aquila'
@@ -204,7 +147,7 @@ patterns: [
         name: 'variable.parameter.aquila'
         patterns: [
           { # doesn't work ? :(
-            match: '^if$|^else$|^end-if$|^for$|^end-for$|^while$|^end-while$|^decl$|^safe$|^overwrite$|^overwrite$|^safe$|^trace$|^null$|^auto$|^int$|^float$|^bool$|^list$|^function$|^end-function$'
+            match: '^if$|^else$|^end\\-if$|^for$|^end-for$|^while$|^end-while$|^decl$|^safe$|^overwrite$|^overwrite$|^safe$|^trace$|^null$|^auto$|^int$|^float$|^bool$|^list$|^function$|^end-function$|^break$|^continue$|^global$'
             name: 'invalid.illegal.aquila'
           }
           {
@@ -212,7 +155,7 @@ patterns: [
             name: 'string.quoted.other.aquila'
           }
           {
-            match: '[a-zA-Z_]+[0-9a-zA-Z_]*'
+            match: '[a-zA-Z_][0-9a-zA-Z_]*'
             name: 'variable.other.aquila'
           }
         ]
@@ -224,7 +167,7 @@ patterns: [
   # functions
   {
     comment: 'control keyword return'
-    match: '(return)(\\()([^\\(\\)]*)(\\))'
+    match: '(return) *(\\()(.*)(\\))'
     captures:
       1: name: 'keyword.control.aquila'
       2: name: 'string.interpolated.aquila'
@@ -232,24 +175,15 @@ patterns: [
       4: name: 'string.interpolated.aquila'
   }
   {
-    comment: 'loop control keywords'
-    match: '(continue|break)(\\()([^\\(\\)]*)(\\))'
+    comment: 'control flow functions'
+    match: '(continue|break) *(\\( *\\))?'
     captures:
       1: name: 'keyword.control.aquila'
       2: name: 'string.interpolated.aquila'
-      3: name: 'invalid.illegal.aquila'
-      4: name: 'string.interpolated.aquila'
-  }
-  {
-    comment: 'other keywords'
-    match: '(trace|trace_func) (.*)'
-    captures:
-      1: name: 'support.class.aquila'
-      2: patterns: [{ include: '$self' }]
   }
   {
     comment: 'print_str & print_str_endl functions'
-    match: '(print_str|print_str_endl|interactive_call)(\\()(.*)(\\))' # maybe we use quotes after all ? idk
+    match: '(print_str|print_str_endl|interactive_call) *(\\()(.*)(\\))' # maybe we use quotes after all ? idk
     captures:
       1: name: 'support.function.aquila'
       2: name: 'string.interpolated.aquila'
@@ -258,14 +192,19 @@ patterns: [
   }
   {
     comment: 'all other functions'
-    match: '([a-zA-Z_]+[0-9a-zA-Z_]*)(\\()([^\\(\\)]*)(\\))'
+    match: '([a-zA-Z_][0-9a-zA-Z_]*) *(\\()(.*)(\\))'
     captures:
       1: name: 'support.function.aquila'
       2: name: 'string.interpolated.aquila'
-      3:
-        name: 'variable.parameter.aquila'
-        patterns: [{ include: '$self' }]
+      3: patterns: [{ include: '$self' }]
       4: name: 'string.interpolated.aquila'
+  }
+  {
+    comment: 'other keywords'
+    match: '(trace|trace_func)( +.*)+'
+    captures:
+      1: name: 'support.class.aquila'
+      2: patterns: [{ include: '$self' }]
   }
   # variable types
   {
@@ -274,7 +213,7 @@ patterns: [
     name: 'constant.numeric.aquila'
   }
   {
-    comments: 'bools'
+    comment: 'bools'
     match: 'true|false'
     name: 'constant.language.aquila'
   }
@@ -284,18 +223,6 @@ patterns: [
     name: 'string.interpolated.aquila'
   }
 ]
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #
