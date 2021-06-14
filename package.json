@@ -1,9 +1,38 @@
 {
-  "name": "aquila-for-atom",
-  "version": "0.2.1",
-  "author": "Nicolas Reyland",
+  "_from": "https://www.atom.io/api/packages/aquila-for-atom/versions/1.4.0/tarball",
+  "_id": "aquila-for-atom@1.4.0",
+  "_inBundle": false,
+  "_integrity": "sha512-dGM8CshH1Oduy6w1QYX9B+GaswC8+Py7qWbFA1EpWfRaNgFevDDXcae7i0PzlFHiWdL0KGEwXR9JEiugQiKpGg==",
+  "_location": "/aquila-for-atom",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "remote",
+    "raw": "https://www.atom.io/api/packages/aquila-for-atom/versions/1.4.0/tarball",
+    "rawSpec": "https://www.atom.io/api/packages/aquila-for-atom/versions/1.4.0/tarball",
+    "saveSpec": "https://www.atom.io/api/packages/aquila-for-atom/versions/1.4.0/tarball",
+    "fetchSpec": "https://www.atom.io/api/packages/aquila-for-atom/versions/1.4.0/tarball"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://www.atom.io/api/packages/aquila-for-atom/versions/1.4.0/tarball",
+  "_shasum": "2aa083f13a6ac18619018943b857a5cf3287e2ce",
+  "_spec": "https://www.atom.io/api/packages/aquila-for-atom/versions/1.4.0/tarball",
+  "_where": "/tmp/apm-install-dir-2021319-73519-1xsy2y4.dmlu",
+  "author": {
+    "name": "Nicolas Reyland"
+  },
+  "bugs": {
+    "url": "https://github.com/Nicolas-Reyland/aquila-for-atom/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "Aquila grammar package (syntax highlighting)",
-  "repository": "https://github.com/Nicolas-Reyland/aquila-for-atom",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "homepage": "https://github.com/Nicolas-Reyland/aquila-for-atom#readme",
   "keywords": [
     "syntax",
     "highlighting",
@@ -11,8 +40,20 @@
     "aquila"
   ],
   "license": "MIT",
-  "bugs": "https://github.com/Nicolas-Reyland/aquila-for-atom/issues",
-  "engines": {
-    "atom": ">=1.0.0 <2.0.0"
+  "name": "aquila-for-atom",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nicolas-Reyland/aquila-for-atom.git"
+  },
+  "version": "1.4.0",
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [],
+    "extensions": {
+      ".json": [
+        "package.json"
+      ]
+    },
+    "folders": []
   }
 }
